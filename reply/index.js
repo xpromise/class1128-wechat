@@ -9,20 +9,13 @@ module.exports = () => {
   
   return async (req, res) => {
     //微信服务器发送过来的请求参数
-    console.log(req.query);
-    /*
-      { signature: 'efd377ff6ad1a1d57accc6d1848f1c7b9b9077f2',   微信加密签名
-      echostr: '4809389192886745081', 微信后台生成的随机字符串
-      timestamp: '1552966105',  微信后台发送请求的时间戳
-      nonce: '1780047115' }     微信后台生成的随机数字
-     */
     const { signature, echostr, timestamp, nonce } = req.query;
     const token = 'atguiguHTML1128';
-  
+    //通过微信签名算法加密出来微信签名
     const sha1Str = sha1([token, timestamp, nonce].sort().join(''));
   
     if (req.method === 'GET') {
-      // 3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+      // 处理验证服务器消息有效性
       if (sha1Str === signature) {
         // 说明消息来自于微信服务器
         res.end(echostr);
@@ -31,8 +24,7 @@ module.exports = () => {
         res.end('error');
       }
     } else if (req.method === 'POST') {
-      // 用户发送过来的消息
-      // console.log(req.body);  // {}
+      // 处理用户发送过来的消息
       // 过滤掉不是微信服务器发送过来的消息
       if (sha1Str !== signature) {
         res.end('error');
