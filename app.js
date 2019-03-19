@@ -107,7 +107,7 @@ app.use(async (req, res) => {
     })
     
     // 格式化jsData
-    const {xml} = jsData;
+    const { xml } = jsData;
     let userData = {};
     for (let key in xml) {
       // 获取到属性值
@@ -115,15 +115,15 @@ app.use(async (req, res) => {
       // 去掉数组
       userData[key] = value[0];
     }
-    
     console.log(userData);
+    
     // 实现自动回复
     let content = '你在说什么？我听不懂';
     
     if (userData.Content === '1') {
       content = '大吉大利，今晚吃鸡';
     } else if (userData.Content.indexOf('2') !== -1) {
-      content = '你属什么? <br> 我属于你';
+      content = '你属什么? \n 我属于你';
     }
     
     let replyMessage = `<xml>
@@ -132,11 +132,10 @@ app.use(async (req, res) => {
       <CreateTime>${Date.now()}</CreateTime>
       <MsgType><![CDATA[text]]></MsgType>
       <Content><![CDATA[${content}]]></Content>
-    </xml>`
+    </xml>`;
     
-    //返回响应
-    res.send(replyMessage)
-    
+    // 返回响应
+    res.send(replyMessage);
     
   } else {
     res.end('error');
