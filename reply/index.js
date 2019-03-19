@@ -3,6 +3,7 @@
  */
 const sha1 = require('sha1');
 const { getUserDataAsync, parseXMLData, formatJsData } = require('../utils/tools');
+const template = require('./template');
 
 module.exports = () => {
   
@@ -45,21 +46,29 @@ module.exports = () => {
       const userData = formatJsData(jsData);
     
       // 实现自动回复
-      let content = '你在说什么？我听不懂';
-    
-      if (userData.Content === '1') {
-        content = '大吉大利，今晚吃鸡';
-      } else if (userData.Content.indexOf('2') !== -1) {
-        content = '你属什么? \n 我属于你';
+      let options = {
+        toUserName: userData.FromUserName,
+        fromUserName: userData.ToUserName,
+        createTime: Date.now(),
+        type: 'text',
+        content: '你在说什么？我听不懂'
       }
     
-      const replyMessage = `<xml>
-      <ToUserName><![CDATA[${userData.FromUserName}]]></ToUserName>
-      <FromUserName><![CDATA[${userData.ToUserName}]]></FromUserName>
-      <CreateTime>${Date.now()}</CreateTime>
-      <MsgType><![CDATA[text]]></MsgType>
-      <Content><![CDATA[${content}]]></Content>
-    </xml>`;
+      if (userData.Content === '1') {
+        options.content = '大吉大利，今晚吃鸡';
+      } else if (userData.Content && userData.Content.indexOf('2') !== -1) {
+        options.content = '你属什么? \n 我属于你';
+      }
+      
+      if (userData.MsgType === 'image') {
+        //将用户发送的图片，返回回去
+        options.mediaId = userData.MediaId;
+        options.type = 'image';
+      }
+      
+    
+      const replyMessage = template(options);
+      console.log(replyMessage);
     
       // 返回响应
       res.send(replyMessage);
