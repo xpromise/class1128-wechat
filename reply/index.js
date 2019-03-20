@@ -4,7 +4,7 @@
 const sha1 = require('sha1');
 const { getUserDataAsync, parseXMLData, formatJsData } = require('../utils/tools');
 const template = require('./template');
-const handleResponse = require('./handleResponse');
+const handleResponse = require('./handle-response');
 
 module.exports = () => {
   

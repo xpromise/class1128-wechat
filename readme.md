@@ -62,7 +62,7 @@
   * 接受普通消息 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140453
   * 接受事件消息 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140454 
 
-## 6、自定义菜单
+## 6、获取access_token
 * 接口
   * 简单来讲：就是一个url地址  http://localhost:3000/login
   * 完整包含：
@@ -72,6 +72,12 @@
     * 请求头/cookie
     * 响应信息
     * ....
-  
+* 定义获取access_token的模块
+  * 封装了getAccessToken函数
+    * 定义请求地址：三个参数，其中appID、appsecret填写自己页面的，grant_type=client_credential这个值是固定不变的
+    * 发送请求，使用的request request-promise-native
+    * 设置过期时间 2小时更新，需要提前5分钟刷新
+    * 保存为一个本地文件（只能保存字符串数据，将js对象转换为json字符串）
+    * 将获取的access_token数据返回出去
   
 
