@@ -77,7 +77,34 @@
     * 定义请求地址：三个参数，其中appID、appsecret填写自己页面的，grant_type=client_credential这个值是固定不变的
     * 发送请求，使用的request request-promise-native
     * 设置过期时间 2小时更新，需要提前5分钟刷新
-    * 保存为一个本地文件（只能保存字符串数据，将js对象转换为json字符串）
+    * 保存为一个本地文件（只能保存字符串数据，将js对象转换为json字符串）fs.writeFile
     * 将获取的access_token数据返回出去
-  
+  * 封装了fetchAccessToken函数
+    * 读取本地accessToken.txt文件 fs.readFile
+    * 如果有判断是否过期，没有过期就直接使用，过期了就调用getAccessToken函数
+    * 如果没有就直接调用getAccessToken函数
+  * 注意promise对象返回值问题
+    * return 返回值看整体表达式的返回值
+    * promise对象表达式返回值就是then / catch函数的返回值
+    * then / catch函数的返回值看内部箭头函数的返回值
+
+## 7、自定义菜单
+* 创建菜单
+  * 获取access_token
+  * 定义请求地址
+    * POST请求需要携带body参数
+  * 发送请求
+  * 返回响应结果
+* 删除菜单
+  * 获取access_token
+  * 定义请求地址
+  * 发送请求
+  * 返回响应结果
+* 总结：实现接口的函数定义的规则
+  * 获取access_token
+  * 定义请求地址
+    * 注意请求参数问题
+  * 发送请求
+  * 返回响应结果
+   
 
