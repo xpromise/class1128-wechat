@@ -1,9 +1,10 @@
 /*
-  中间件函数模块
+  中间件函数模块： 接受请求，返回响应
  */
 const sha1 = require('sha1');
 const { getUserDataAsync, parseXMLData, formatJsData } = require('../utils/tools');
 const template = require('./template');
+const handleResponse = require('./handleResponse');
 
 module.exports = () => {
   
@@ -36,32 +37,12 @@ module.exports = () => {
       const jsData = parseXMLData(xmlData);
       // 格式化jsData
       const userData = formatJsData(jsData);
-    
-      // 实现自动回复
-      let options = {
-        toUserName: userData.FromUserName,
-        fromUserName: userData.ToUserName,
-        createTime: Date.now(),
-        type: 'text',
-        content: '你在说什么？我听不懂'
-      }
-    
-      if (userData.Content === '1') {
-        options.content = '大吉大利，今晚吃鸡';
-      } else if (userData.Content && userData.Content.indexOf('2') !== -1) {
-        options.content = '你属什么? \n 我属于你';
-      }
-      
-      if (userData.MsgType === 'image') {
-        //将用户发送的图片，返回回去
-        options.mediaId = userData.MediaId;
-        options.type = 'image';
-      }
-      
-    
+      // 处理用户发送的消息，定义响应的数据
+      const options = handleResponse(userData);
+      // 用于定义回复用户消息的6种模板模块
       const replyMessage = template(options);
+      // 如果响应错误， 看打印结果是否错误
       console.log(replyMessage);
-    
       // 返回响应
       res.send(replyMessage);
     
