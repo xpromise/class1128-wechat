@@ -55,5 +55,11 @@
 * 里面尽可能少写重复代码，用字符串拼串的方式实现。
   * 重复的字符串提取出来，不同的单独拼接
   
+## 5、完成回复完整用户消息
+* 封装处理用户发送的消息，定义响应的数据的模块
+* 通过判断不同的消息类型 MsgType 返回不同的响应内容
+* 具体类型看文档：
+  * 接受普通消息 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140453
+  * 接受事件消息 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140454 
   
 
