@@ -129,19 +129,40 @@ async function batchUsersTag(openid_list, tagid) {
   return await rp({method: 'POST', url, json: true, body: {openid_list, tagid}});
 }
 
+/**
+ * 根据标签进行群发消息
+ * @param body 参数文档：https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1481187827_i0l21
+ * @return {Promise<*>}
+ */
+async function sendMessage(body) {
+  // 获取access_token
+  const { access_token } = await fetchAccessToken();
+  // 定义请求
+  const url = `${URL_PREFIX}message/mass/sendall?access_token=${access_token}`;
+  // 发送请求
+  return await rp({method: 'POST', url, json: true, body});
+}
+
 (async () => {
-  let result1 = await createTag('class1128');
+  /*let result1 = await createTag('class1128');
   console.log(result1);
   let result2 = await batchUsersTag([
-    'oAsoR1tdht1mHQW2znkVdyKLQHDI',
     'oAsoR1iP-_D3LZIwNCnK8BFotmJc',
-    'oAsoR1tngrRqKn-6qBz4h5JK6vQc',
-    'oAsoR1kDBTMVyVDErZWiH34ZM2x8',
-    'oAsoR1rAlnJViy_XlzBsSP-yFk48'
-  ], result1.tag.id);
+  ], result1.tag.id); // 139
   console.log(result2);
   let result3 = await getTagUsers(result1.tag.id);
-  console.log(result3);
+  console.log(result3);*/
   
-  
+  const body = {
+    "filter":{
+      "is_to_all":false,  // 是否添加进历史记录
+      "tag_id": 139
+    },
+    "text":{
+      "content": '测试群发消息~ \n点击提前学习后面的课程 \n<a href="https://segmentfault.com/a/1190000018534625">webpack4开发教程</a>'
+    },
+    "msgtype":"text"
+  }
+  const result = await sendMessage(body);
+  console.log(result);
 })()
