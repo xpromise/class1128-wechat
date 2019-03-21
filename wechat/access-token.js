@@ -38,14 +38,15 @@ async function getAccessToken() {
   // 设置过期时间 2小时更新，提前5分钟刷新
   result.expires_in = Date.now() + 7200000 - 300000;
   // 保存为一个文件 ---> 只能保存字符串数据，将js对象转换为json字符串
-  writeFile('./accessToken.txt', JSON.stringify(result), (err) => {
-    if (!err) console.log('文件保存成功');
-    else console.log(err);
+  await new Promise((resolve, reject) => {
+    writeFile('./accessToken.txt', JSON.stringify(result), (err) => {
+      if (!err) resolve();
+      else reject(err);
+    })
   })
   // 返回获取好的access_token
   return result;
 }
-
 // 得到最终有效的access_token
 module.exports = function fetchAccessToken() {
   /*
@@ -71,7 +72,6 @@ module.exports = function fetchAccessToken() {
     // 内部箭头函数的返回值 就是 then / catch函数的返回值
     // 返回值如果是promise， 就不处理， 如果不是， 就会包一层promise返回
     .then(res => {
-      // console.log(res);
       // 判断有没有过期
       if (res.expires_in < Date.now()) {
         // 过期了
