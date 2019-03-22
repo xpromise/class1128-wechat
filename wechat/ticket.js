@@ -68,9 +68,9 @@ function fetchTicket() {
 }
 
 
-(async () => {
+/*(async () => {
   const result = await fetchTicket();
   console.log(result);
-})()
+})()*/
 
 module.exports = fetchTicket;

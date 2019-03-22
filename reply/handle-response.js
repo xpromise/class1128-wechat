@@ -18,6 +18,8 @@ module.exports = (userData) => {
       options.content = '大吉大利，今晚吃鸡';
     } else if (userData.Content.indexOf('2') !== -1) {
       options.content = '你属什么? \n 我属于你';
+    } else if (userData.Content === '3') {
+      options.content = `<a href="http://4d4b249f.ngrok.io/search">语音识别页面</a>`;
     }
   } else if (userData.MsgType === 'voice') {
     // 将用户发送的语音消息， 返回语音识别结果给用户（需要开通才能生效）
