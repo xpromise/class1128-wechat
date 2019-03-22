@@ -1,6 +1,7 @@
 /*
   处理用户发送的消息，定义响应的数据
  */
+const { url } = require('../config');
 
 module.exports = (userData) => {
   // 实现自动回复
@@ -19,7 +20,7 @@ module.exports = (userData) => {
     } else if (userData.Content.indexOf('2') !== -1) {
       options.content = '你属什么? \n 我属于你';
     } else if (userData.Content === '3') {
-      options.content = `<a href="http://4d4b249f.ngrok.io/search">语音识别页面</a>`;
+      options.content = `<a href="${url}/search">语音识别页面</a>`;
     }
   } else if (userData.MsgType === 'voice') {
     // 将用户发送的语音消息， 返回语音识别结果给用户（需要开通才能生效）

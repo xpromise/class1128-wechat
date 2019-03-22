@@ -2,11 +2,14 @@ const express = require('express');
 const sha1 = require('sha1');
 const reply = require('./reply');
 const fetchTicket = require('./wechat/ticket');
+const { url, appId } = require('./config');
 const app = express();
 
 // 配置ejs
 app.set('views', 'views');
 app.set('view engine', 'ejs');
+
+app.use(express.static('images'));
 
 app.get('/search', async (req, res) => {
   /*
@@ -15,20 +18,19 @@ app.get('/search', async (req, res) => {
     3. 这里需要注意的是所有参数名均为小写字符。对string1作sha1加密，字段名和字段值都采用原始值，不进行URL 转义。
   */
   const { ticket } = await fetchTicket();
-  const url = 'http://4d4b249f.ngrok.io/search';
   const noncestr = Math.random().toString().slice(2);
   const timestamp = Math.round(Date.now() / 1000);
   
   const arr = [
     `jsapi_ticket=${ticket}`,
-    `url=${url}`,
+    `url=${url}/search`,
     `noncestr=${noncestr}`,
     `timestamp=${timestamp}`
   ];
   
   const signature = sha1(arr.sort().join('&'));
   
-  res.render('search', {noncestr, timestamp, signature});
+  res.render('search', {noncestr, timestamp, signature, appId, url});
 })
 
 app.use(reply());

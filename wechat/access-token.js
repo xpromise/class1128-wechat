@@ -26,10 +26,10 @@
 const rp = require('request-promise-native');
 const { writeFileAsync, readFileAsync } = require('../utils/tools');
 
+const { appId, appSecret } = require('../config');
+
 // 发送请求、获取access_token，保存起来，设置过期时间
 async function getAccessToken() {
-  const appId = 'wxc8e92f7ab70fbca0';
-  const appSecret = 'b4054e90b75787c78e0af50bf7fc3e87';
   // 定义请求地址
   const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appId}&secret=${appSecret}`;
   // 发送请求
