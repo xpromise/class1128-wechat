@@ -2,19 +2,19 @@ const express = require('express');
 const reply = require('./reply');
 const app = express();
 
-/*
-  1. 验证服务器的有效性：
-    - url 开发者服务器地址
-      通过ngrok工具将本地地址转化外网能访问的地址（内网穿透）
-      指令： ngrok http 3000
-    - token 尽量复杂一些就行
-    
-    微信要求验证开发者服务器的有效性，同样的开发者也得验证消息是否来自于微信服务器
-    1）将token、timestamp、nonce三个参数进行字典序排序
-    2）将三个参数字符串拼接成一个字符串进行sha1加密
-    3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
- */
+// 配置ejs
+app.set('views', 'views');
+app.set('view engine', 'ejs');
 
+app.get('/search', (req, res) => {
+  /*
+  1. 参与签名的字段包括noncestr（随机字符串）, 有效的jsapi_ticket, timestamp（时间戳）, url（当前网页的URL，不包含#及其后面部分） 。
+  2. 对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）后，使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串string1。
+  3. 这里需要注意的是所有参数名均为小写字符。对string1作sha1加密，字段名和字段值都采用原始值，不进行URL 转义。
+  */
+  
+  res.render('search', {});
+})
 
 app.use(reply());
 
